@@ -40,7 +40,7 @@ los mismos.
 """
 
 def initcatalogo():
-    catalogo  = {
+    catalogo = {
                     'stops': None,
                     'connections': None,
                     'components': None,
