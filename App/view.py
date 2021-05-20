@@ -39,7 +39,8 @@ def printMenu():
     print("1- Cargar información en el catálogo")
     print("2- ")
 
-catalog = None
+def initcatalog():
+    return controller.initcatalog()
 
 """
 Menu principal
@@ -49,7 +50,7 @@ while True:
     inputs = input('Seleccione una opción para continuar\n')
     if int(inputs[0]) == 1:
         print("Cargando información de los archivos ....")
-
+        catalogo = initcatalog()
     elif int(inputs[0]) == 2:
         pass
 
