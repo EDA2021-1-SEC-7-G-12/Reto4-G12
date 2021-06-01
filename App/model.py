@@ -40,6 +40,14 @@ los mismos.
 """
 
 def initcatalogo():
+    """ Inicializa el catalogo
+
+   stops: Tabla de hash para guardar los vertices del grafo
+   connections: Grafo para representar las rutas entre vertices
+   components: Almacena la informacion de los componentes conectados
+   paths: Estructura que almancena los caminos de costo minimo desde un
+           vertice determinado a todos los otros vértices del grafo
+    """
     catalogo = {
                     'stops': None,
                     'connections': None,
@@ -56,6 +64,9 @@ def initcatalogo():
                                               size=14000,
                                               comparefunction=compareStopIds)
     return catalogo
+
+def addPath(catalogo, x):
+    gr.addEdge(catalogo["connections"], )
 
 def addStopConnection(catalogo, lastservice, service):
     origin = formatVertex(lastservice)
@@ -137,3 +148,4 @@ def addRouteConnections(catalogo):
                 addConnection(catalogo, prevrout, route, 0)
                 addConnection(catalogo, route, prevrout, 0)
             prevrout = route
+
