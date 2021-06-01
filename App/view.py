@@ -42,6 +42,9 @@ def printMenu():
 def initcatalog():
     return controller.initcatalog()
 
+def ciudad_id(catalogo):
+    return controller.ciudad_id(catalogo)
+
 """
 Menu principal
 """
@@ -52,7 +55,7 @@ while True:
         print("Cargando información de los archivos ....")
         catalogo = initcatalog()
     elif int(inputs[0]) == 2:
-        pass
+        print(ciudad_id)
 
     else:
         sys.exit(0)

@@ -38,11 +38,6 @@ def loadCatalogo(catalogo):
 
     """
     Carga los datos de los archivos CSV en el modelo.
-    Se crea un arco entre cada par de estaciones que
-    pertenecen al mismo servicio y van en el mismo sentido.
-
-    addRouteConnection crea conexiones entre diferentes rutas
-    servidas en una misma estación.
     """
     verfile = cf.data_dir + 'connections.csv'
     input_file = csv.DictReader(open(verfile, encoding="utf-8"),
@@ -61,3 +56,6 @@ def loadCatalogo(catalogo):
 
 
     return catalogo
+
+def ciudad_id(catalogo):
+    return model.ciudad_id(catalogo)

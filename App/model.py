@@ -50,10 +50,10 @@ def initcatalogo():
     catalogo["vertices"] = m.newMap(numelements=14000,
                                      maptype='PROBING')
 
-
     catalogo['conexiones'] = gr.newGraph(datastructure='ADJ_LIST',
                                               directed=False,
-                                              size=14000)
+                                              size=14000, comparefunction=None)
+
     catalogo["paises"] = m.newMap(numelements=14000,
                                      maptype='PROBING')
 
@@ -64,7 +64,7 @@ def ciudad_id(catalogo):
     id=m.get(catalogo["vertices"],catalogo["vertices"]["landing_point_id"])["value"]
     pais=m.get(catalogo["vertices"],catalogo["vertices"]["name"])["value"]
     mapaciudades["id"]=m.put(mapaciudades, id, pais)
-    
+    return mapaciudades
 
 def addInfo(catalogo,ruta):
     addConexion(catalogo,ruta["origin"],ruta["destination"],haversine(catalogo,ruta))
@@ -75,7 +75,7 @@ def haversine(catalogo,ruta):
     inforigen = m.get(catalogo["vertices"],origen)["value"]
     infodest = m.get(catalogo["vertices"],destination)["value"]
     c = math.pi/180 
-    dist = math.abs(2*6371000*math.lasin(math.sqrt(math.sin(c*(infodest["latitude"]-inforigen["latitude"])/2)**2 + math.cos(c*inforigen["latitude"])*math.cos(c*infodest["latitude"])*math.sin(c*(infodest["longitude"]-inforigen["longitude"])/2)**2)))
+    dist = math.abs(2*6371000*math.asin(math.sqrt(math.sin(c*(infodest["latitude"]-inforigen["latitude"])/2)**2 + math.cos(c*inforigen["latitude"])*math.cos(c*infodest["latitude"])*math.sin(c*(infodest["longitude"]-inforigen["longitude"])/2)**2)))
     return dist
 
 def addVer(catalogo,vertice):
