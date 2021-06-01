@@ -39,7 +39,7 @@ def loadCatalogo(catalogo):
     """
     Carga los datos de los archivos CSV en el modelo.
     """
-    verfile = cf.data_dir + 'connections.csv'
+    verfile = cf.data_dir + 'landing_points.csv'
     input_file = csv.DictReader(open(verfile, encoding="utf-8"),
                                 delimiter=",")
     for vertice in input_file:
