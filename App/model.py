@@ -59,10 +59,17 @@ def initcatalogo():
 
     return catalogo
 
-def addInfo(catalogo,ruta):
-    addConexion(catalogo,ruta["origin"],ruta["destination"],haversing(catalogo,ruta))
+def ciudad_id(catalogo):
+    mapaciudades = m.newMap(numelements=14000, maptype='PROBING')
+    id=m.get(catalogo["vertices"],catalogo["vertices"]["landing_point_id"])["value"]
+    pais=m.get(catalogo["vertices"],catalogo["vertices"]["name"])["value"]
+    mapaciudades["id"]=m.put(mapaciudades, id, pais)
+    
 
-def haversing(catalogo,ruta):
+def addInfo(catalogo,ruta):
+    addConexion(catalogo,ruta["origin"],ruta["destination"],haversine(catalogo,ruta))
+
+def haversine(catalogo,ruta):
     origen = ruta["origin"]
     destination = ruta["destination"]
     inforigen = m.get(catalogo["vertices"],origen)["value"]
