@@ -35,6 +35,7 @@ def initcatalog():
     return catalogo
 
 def loadCatalogo(catalogo):
+
     """
     Carga los datos de los archivos CSV en el modelo.
     Se crea un arco entre cada par de estaciones que

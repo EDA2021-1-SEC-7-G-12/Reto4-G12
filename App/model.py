@@ -44,16 +44,19 @@ def initcatalogo():
                     'vertices': None,
                     'conexiones': None,
                     "paises": None
+
                     }
 
     catalogo["vertices"] = m.newMap(numelements=14000,
                                      maptype='PROBING')
+
 
     catalogo['conexiones'] = gr.newGraph(datastructure='ADJ_LIST',
                                               directed=False,
                                               size=14000)
     catalogo["paises"] = m.newMap(numelements=14000,
                                      maptype='PROBING')
+
     return catalogo
 
 def addInfo(catalogo,ruta):
@@ -78,3 +81,4 @@ def addConexion(catalogo,origen,destino,distancia):
     edge = gr.getEdge(catalogo['conexiones'], origen, destino)
     if edge is None:
         gr.addEdge(catalogo['conexiones'], origen, destino, distancia)
+
