@@ -43,8 +43,8 @@ def initcatalogo():
     catalogo  = {
                     'vertices': None,
                     'conexiones': None,
-                    "paises": None
-
+                    "paises": None,
+                    "paisesn't": None
                     }
 
     catalogo["vertices"] = m.newMap(numelements=14000,
@@ -57,14 +57,9 @@ def initcatalogo():
     catalogo["paises"] = m.newMap(numelements=14000,
                                      maptype='PROBING')
 
-    return catalogo
+    catalogo["paisesn't"] =  m.newMap(numelements=14000, maptype='PROBING')
 
-def ciudad_id(catalogo):
-    mapaciudades = m.newMap(numelements=14000, maptype='PROBING')
-    id=m.get(catalogo["vertices"],catalogo["vertices"]["landing_point_id"])["value"]
-    pais=m.get(catalogo["vertices"],catalogo["vertices"]["name"])["value"]
-    mapaciudades["id"]=m.put(mapaciudades, id, pais)
-    return mapaciudades
+    return catalogo
 
 def addInfo(catalogo,ruta):
     addConexion(catalogo,ruta["origin"],ruta["destination"],haversine(catalogo,ruta))
@@ -75,17 +70,17 @@ def haversine(catalogo,ruta):
     inforigen = m.get(catalogo["vertices"],origen)["value"]
     infodest = m.get(catalogo["vertices"],destination)["value"]
     c = math.pi/180 
-    dist = math.abs(2*6371000*math.asin(math.sqrt(math.sin(c*(infodest["latitude"]-inforigen["latitude"])/2)**2 + math.cos(c*inforigen["latitude"])*math.cos(c*infodest["latitude"])*math.sin(c*(infodest["longitude"]-inforigen["longitude"])/2)**2)))
+    dist = abs(2*6371000*math.asin(math.sqrt(math.sin(c*(float(infodest["latitude"])-float(inforigen["latitude"]))/2)**2 + math.cos(c*float(inforigen["latitude"]))*math.cos(c*float(infodest["latitude"]))*math.sin(c*(float(infodest["longitude"])-float(inforigen["longitude"]))/2)**2)))
     return dist
 
 def addVer(catalogo,vertice):
     m.put(catalogo["vertices"],vertice["landing_point_id"],vertice)
     if not gr.containsVertex(catalogo['conexiones'], vertice["landing_point_id"]):
         gr.insertVertex(catalogo['conexiones'], vertice["landing_point_id"])
+    m.put(catalogo["paisesn't"],vertice["name"],vertice["landing_point_id"])
 
 
 def addConexion(catalogo,origen,destino,distancia):
     edge = gr.getEdge(catalogo['conexiones'], origen, destino)
     if edge is None:
         gr.addEdge(catalogo['conexiones'], origen, destino, distancia)
-

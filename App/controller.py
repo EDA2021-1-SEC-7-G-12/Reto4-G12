@@ -50,12 +50,10 @@ def loadCatalogo(catalogo):
                                 delimiter=",")
     
     for ruta in input_file:
+        ruta["origin"] = ruta["\ufefforigin"]
         model.addInfo(catalogo,ruta)
 
     
 
 
     return catalogo
-
-def ciudad_id(catalogo):
-    return model.ciudad_id(catalogo)
