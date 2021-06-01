@@ -24,7 +24,7 @@
  * Dario Correal - Version inicial
  """
 
-
+import math
 import config
 from DISClib.ADT.graph import gr
 from DISClib.ADT import map as m
@@ -41,99 +41,40 @@ los mismos.
 
 def initcatalogo():
     catalogo  = {
-                    'stops': None,
-                    'connections': None,
-                    'components': None,
-                    'paths': None
+                    'vertices': None,
+                    'conexiones': None,
+                    "paises": None
                     }
 
-    catalogo['stops'] = m.newMap(numelements=14000,
-                                     maptype='PROBING',
-                                     comparefunction=compareStopIds)
+    catalogo["vertices"] = m.newMap(numelements=14000,
+                                     maptype='PROBING')
 
-    catalogo['connections'] = gr.newGraph(datastructure='ADJ_LIST',
-                                              directed=True,
-                                              size=14000,
-                                              comparefunction=compareStopIds)
+    catalogo['conexiones'] = gr.newGraph(datastructure='ADJ_LIST',
+                                              directed=False,
+                                              size=14000)
+    catalogo["paises"] = m.newMap(numelements=14000,
+                                     maptype='PROBING')
     return catalogo
 
-def addStopConnection(catalogo, lastservice, service):
-    origin = formatVertex(lastservice)
-    destination = formatVertex(service)
-    cleanServiceDistance(lastservice, service)
-    distance = float(service['Distance']) - float(lastservice['Distance'])
-    distance = abs(distance)
-    addStop(catalogo, origin)
-    addStop(catalogo, destination)
-    addConnection(catalogo, origin, destination, distance)
-    addRouteStop(catalogo, service)
-    addRouteStop(catalogo, lastservice)
-    return catalogo
+def addInfo(catalogo,ruta):
+    addConexion(catalogo,ruta["origin"],ruta["destination"],haversing(catalogo,ruta))
 
-def compareStopIds(stop, keyvaluestop):
-    stopcode = keyvaluestop['key']
-    if (stop == stopcode):
-        return 0
-    elif (stop > stopcode):
-        return 1
-    else:
-        return -1
+def haversing(catalogo,ruta):
+    origen = ruta["origin"]
+    destination = ruta["destination"]
+    inforigen = m.get(catalogo["vertices"],origen)["value"]
+    infodest = m.get(catalogo["vertices"],destination)["value"]
+    c = math.pi/180 
+    dist = math.abs(2*6371000*math.lasin(math.sqrt(math.sin(c*(infodest["latitude"]-inforigen["latitude"])/2)**2 + math.cos(c*inforigen["latitude"])*math.cos(c*infodest["latitude"])*math.sin(c*(infodest["longitude"]-inforigen["longitude"])/2)**2)))
+    return dist
+
+def addVer(catalogo,vertice):
+    m.put(catalogo["vertices"],vertice["landing_point_id"],vertice)
+    if not gr.containsVertex(catalogo['conexiones'], vertice["landing_point_id"]):
+        gr.insertVertex(catalogo['conexiones'], vertice["landing_point_id"])
 
 
-def compareroutes(route1, route2):
-    if (route1 == route2):
-        return 0
-    elif (route1 > route2):
-        return 1
-    else:
-        return -1
-
-def addStop(catalogo, stopid):
-    if not gr.containsVertex(catalogo['connections'], stopid):
-            gr.insertVertex(catalogo['connections'], stopid)
-    return catalogo
-
-
-def addRouteStop(catalogo, service):
-    entry = m.get(catalogo['stops'], service['BusStopCode'])
-    if entry is None:
-        lstroutes = lt.newList(cmpfunction=compareroutes)
-        lt.addLast(lstroutes, service['ServiceNo'])
-        m.put(catalogo['stops'], service['BusStopCode'], lstroutes)
-    else:
-        lstroutes = entry['value']
-        info = service['ServiceNo']
-        if not lt.isPresent(lstroutes, info):
-            lt.addLast(lstroutes, info)
-    return catalogo
-
-def cleanServiceDistance(lastservice, service):
-    if service['Distance'] == '':
-        service['Distance'] = 0
-    if lastservice['Distance'] == '':
-        lastservice['Distance'] = 0
-
-
-def formatVertex(service):
-    name = service['BusStopCode'] + '-'
-    name = name + service['ServiceNo']
-    return name
-
-def addConnection(catalogo, origin, destination, distance):
-    edge = gr.getEdge(catalogo['connections'], origin, destination)
+def addConexion(catalogo,origen,destino,distancia):
+    edge = gr.getEdge(catalogo['conexiones'], origen, destino)
     if edge is None:
-        gr.addEdge(catalogo['connections'], origin, destination, distance)
-    return catalogo
-
-def addRouteConnections(catalogo):
-
-    lststops = m.keySet(catalogo['stops'])
-    for key in lt.iterator(lststops):
-        lstroutes = m.get(catalogo['stops'], key)['value']
-        prevrout = None
-        for route in lt.iterator(lstroutes):
-            route = key + '-' + route
-            if prevrout is not None:
-                addConnection(catalogo, prevrout, route, 0)
-                addConnection(catalogo, route, prevrout, 0)
-            prevrout = route
+        gr.addEdge(catalogo['conexiones'], origen, destino, distancia)

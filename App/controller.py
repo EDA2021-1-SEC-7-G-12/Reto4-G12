@@ -43,17 +43,20 @@ def loadCatalogo(catalogo):
     addRouteConnection crea conexiones entre diferentes rutas
     servidas en una misma estación.
     """
-    servicesfile = cf.data_dir + 'bus_routes_14000.csv'
-    input_file = csv.DictReader(open(servicesfile, encoding="utf-8"),
+    verfile = cf.data_dir + 'connections.csv'
+    input_file = csv.DictReader(open(verfile, encoding="utf-8"),
                                 delimiter=",")
-    lastservice = None
-    for service in input_file:
-        if lastservice is not None:
-            sameservice = lastservice['ServiceNo'] == service['ServiceNo']
-            samedirection = lastservice['Direction'] == service['Direction']
-            samebusStop = lastservice['BusStopCode'] == service['BusStopCode']
-            if sameservice and samedirection and not samebusStop:
-                model.addStopConnection(catalogo, lastservice, service)
-        lastservice = service
-    model.addRouteConnections(catalogo)
+    for vertice in input_file:
+        model.addVer(catalogo,vertice)
+
+    confile = cf.data_dir + 'connections.csv'
+    input_file = csv.DictReader(open(confile, encoding="utf-8"),
+                                delimiter=",")
+    
+    for ruta in input_file:
+        model.addInfo(catalogo,ruta)
+
+    
+
+
     return catalogo
