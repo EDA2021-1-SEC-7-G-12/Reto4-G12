@@ -53,7 +53,7 @@ while True:
         print("Cargando información de los archivos ....")
         catalogo = initcatalog()
     elif int(inputs[0]) == 2:
-
+        None
     else:
         sys.exit(0)
 sys.exit(0)
