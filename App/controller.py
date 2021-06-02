@@ -53,10 +53,4 @@ def loadCatalogo(catalogo):
         ruta["origin"] = ruta["\ufefforigin"]
         model.addInfo(catalogo,ruta)
 
-    for id in input_file:
-        model.addPaisesnt(catalogo,id)
-
-    
-
-
     return catalogo

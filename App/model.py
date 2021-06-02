@@ -77,6 +77,7 @@ def addVer(catalogo,vertice):
     m.put(catalogo["vertices"],vertice["landing_point_id"],vertice)
     if not gr.containsVertex(catalogo['conexiones'], vertice["landing_point_id"]):
         gr.insertVertex(catalogo['conexiones'], vertice["landing_point_id"])
+    m.put(catalogo["paisesn't"],vertice["name"],vertice["landing_point_id"])
    
 
 
@@ -84,6 +85,3 @@ def addConexion(catalogo,origen,destino,distancia):
     edge = gr.getEdge(catalogo['conexiones'], origen, destino)
     if edge is None:
         gr.addEdge(catalogo['conexiones'], origen, destino, distancia)
-
-def addPaisesnt(catalogo, id):
-     m.put(catalogo["paisesn't"],id["name"],id["landing_point_id"])
