@@ -58,7 +58,7 @@ def initcatalogo():
                                      maptype='PROBING')
 
     catalogo["paisesn't"] =  m.newMap(numelements=14000, maptype='PROBING')
-    print( catalogo["paisesn't"])
+    print(catalogo["vertices"])
     return catalogo
 
 def addInfo(catalogo,ruta):
