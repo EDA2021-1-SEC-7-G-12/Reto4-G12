@@ -83,15 +83,16 @@ def addVer(catalogo,vertice):
     m.put(catalogo["vertices"],vertice["landing_point_id"],vertice)
     if not gr.containsVertex(catalogo['conexiones'], vertice["landing_point_id"]):
         gr.insertVertex(catalogo['conexiones'], vertice["landing_point_id"])
-    pais = vertice["name"].split(",")
-    if len(pais[1]) > 3:
-        if not m.contains(catalogo["mapaises"],pais[1].strip(" ")):
-            m.put(catalogo["mapaises"],pais[1].strip(" "),lt.newList("ARRAY_LIST"))
-        lt.addLast(m.get(catalogo["mapaises"],pais[1].strip(" "))["value"],vertice["landing_point_id"])
-    else:
-        if not m.contains(catalogo["mapaises"],pais[2].strip(" ")):
-            m.put(catalogo["mapaises"],pais[2].strip(" "),lt.newList("ARRAY_LIST"))
-        lt.addLast(m.get(catalogo["mapaises"],pais[2].strip(" "))["value"],vertice["landing_point_id"])
+    pais = vertice["name"].split(",") 
+    if len(pais)>1:
+        if len(pais[1]) > 3:
+            if not m.contains(catalogo["mapaises"],pais[1].strip(" ")):
+                m.put(catalogo["mapaises"],pais[1].strip(" "),lt.newList("ARRAY_LIST"))
+            lt.addLast(m.get(catalogo["mapaises"],pais[1].strip(" "))["value"],vertice["landing_point_id"])
+        else:
+            if not m.contains(catalogo["mapaises"],pais[2].strip(" ")):
+                m.put(catalogo["mapaises"],pais[2].strip(" "),lt.newList("ARRAY_LIST"))
+            lt.addLast(m.get(catalogo["mapaises"],pais[2].strip(" "))["value"],vertice["landing_point_id"])
 
 
 def addConexion(catalogo,origen,destino,distancia):
