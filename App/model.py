@@ -64,8 +64,10 @@ def initcatalogo():
 
     return catalogo
 
+
 def addInfo(catalogo,ruta):
     addConexion(catalogo,ruta["origin"],ruta["destination"],haversine(catalogo,ruta))
+
 
 def haversine(catalogo,ruta):
     origen = ruta["origin"]
@@ -75,6 +77,7 @@ def haversine(catalogo,ruta):
     c = math.pi/180 
     dist = abs(2*6371000*math.asin(math.sqrt(math.sin(c*(float(infodest["latitude"])-float(inforigen["latitude"]))/2)**2 + math.cos(c*float(inforigen["latitude"]))*math.cos(c*float(infodest["latitude"]))*math.sin(c*(float(infodest["longitude"])-float(inforigen["longitude"]))/2)**2)))
     return dist
+
 
 def addVer(catalogo,vertice):
     m.put(catalogo["vertices"],vertice["landing_point_id"],vertice)
@@ -89,15 +92,13 @@ def addVer(catalogo,vertice):
         if not m.contains(catalogo["mapaises"],pais[2].strip(" ")):
             m.put(catalogo["mapaises"],pais[2].strip(" "),lt.newList("ARRAY_LIST"))
         lt.addLast(m.get(catalogo["mapaises"],pais[2].strip(" "))["value"],vertice["landing_point_id"])
-    
-
-   
 
 
 def addConexion(catalogo,origen,destino,distancia):
     edge = gr.getEdge(catalogo['conexiones'], origen, destino)
     if edge is None:
         gr.addEdge(catalogo['conexiones'], origen, destino, distancia)
+
 
 def addcountry(catalogo,pais):
     if not pais == None: 
@@ -113,3 +114,7 @@ def addcountry(catalogo,pais):
                 dist = abs(2*6371000*math.asin(math.sqrt(math.sin(c*(float(infodestino["latitude"])-float(pais["CapitalLatitude"]))/2)**2 + math.cos(c*float(pais["CapitalLatitude"]))*math.cos(c*float(infodestino["latitude"]))*math.sin(c*(float(infodestino["longitude"])-float(pais["CapitalLongitude"]))/2)**2)))
                 if edge is None:
                     gr.addEdge(catalogo['conexiones'], pais["CapitalName"], vertice, dist)
+
+
+def clusters(catalogo, lp1, lp2):
+    print(scc.KosarajuSCC(catalogo))

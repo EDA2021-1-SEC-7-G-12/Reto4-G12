@@ -42,7 +42,8 @@ def printMenu():
 def initcatalog():
     return controller.initcatalog()
 
-
+def clusters(catalogo, lp1, lp2):
+    return controller.clusters(catalogo, lp1, lp2)
 """
 Menu principal
 """
@@ -53,7 +54,8 @@ while True:
         print("Cargando información de los archivos ....")
         catalogo = initcatalog()
     elif int(inputs[0]) == 2:
-        None
+        catalogo = initcatalog()
+        print(clusters(catalogo, lp))
     else:
         sys.exit(0)
 sys.exit(0)
