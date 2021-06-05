@@ -52,7 +52,6 @@ while True:
     if int(inputs[0]) == 1:
         print("Cargando información de los archivos ....")
         catalogo = initcatalog()
-        print(catalogo["paisesn't"])
     elif int(inputs[0]) == 2:
         None
     else:

@@ -52,5 +52,10 @@ def loadCatalogo(catalogo):
     for ruta in input_file:
         ruta["origin"] = ruta["\ufefforigin"]
         model.addInfo(catalogo,ruta)
+    paisfile = cf.data_dir + 'countries.csv'
+    input_file = csv.DictReader(open(paisfile, encoding="utf-8"),
+                                delimiter=",")
+    for pais in input_file:
+        model.addcountry(catalogo,pais)
 
     return catalogo

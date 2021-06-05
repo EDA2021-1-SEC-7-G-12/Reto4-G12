@@ -44,7 +44,8 @@ def initcatalogo():
                     'vertices': None,
                     'conexiones': None,
                     "paises": None,
-                    "paisesn't": None
+                    "paisesn't": None,
+                    "mapaises": None
                     }
 
     catalogo["vertices"] = m.newMap(numelements=14000,
@@ -58,6 +59,8 @@ def initcatalogo():
                                      maptype='PROBING')
 
     catalogo["paisesn't"] =  m.newMap(numelements=14000, maptype='PROBING')
+
+    catalogo["mapaises"] =  m.newMap(numelements=600, maptype='PROBING')
 
     return catalogo
 
@@ -77,7 +80,17 @@ def addVer(catalogo,vertice):
     m.put(catalogo["vertices"],vertice["landing_point_id"],vertice)
     if not gr.containsVertex(catalogo['conexiones'], vertice["landing_point_id"]):
         gr.insertVertex(catalogo['conexiones'], vertice["landing_point_id"])
-    m.put(catalogo["paisesn't"],vertice["name"],vertice["landing_point_id"])
+    pais = vertice["name"].split(",")
+    if len(pais[1]) > 3:
+        if not m.contains(catalogo["mapaises"],pais[1].strip(" ")):
+            m.put(catalogo["mapaises"],pais[1].strip(" "),lt.newList("ARRAY_LIST"))
+        lt.addLast(m.get(catalogo["mapaises"],pais[1].strip(" "))["value"],vertice["landing_point_id"])
+    else:
+        if not m.contains(catalogo["mapaises"],pais[2].strip(" ")):
+            m.put(catalogo["mapaises"],pais[2].strip(" "),lt.newList("ARRAY_LIST"))
+        lt.addLast(m.get(catalogo["mapaises"],pais[2].strip(" "))["value"],vertice["landing_point_id"])
+    
+
    
 
 
@@ -85,3 +98,18 @@ def addConexion(catalogo,origen,destino,distancia):
     edge = gr.getEdge(catalogo['conexiones'], origen, destino)
     if edge is None:
         gr.addEdge(catalogo['conexiones'], origen, destino, distancia)
+
+def addcountry(catalogo,pais):
+    if not pais == None: 
+        m.put(catalogo["paises"],pais["CountryName"],pais)
+        gr.insertVertex(catalogo['conexiones'], pais["CapitalName"])
+        if not m.get(catalogo["mapaises"],pais["CountryName"]) == None:
+            listapoints = m.get(catalogo["mapaises"],pais["CountryName"])["value"]
+            for x in range(int(listapoints["size"])):
+                vertice = lt.getElement(listapoints,x)
+                edge = gr.getEdge(catalogo['conexiones'], pais["CapitalName"], vertice)
+                infodestino = m.get(catalogo["vertices"],vertice)["value"]
+                c = math.pi/180 
+                dist = abs(2*6371000*math.asin(math.sqrt(math.sin(c*(float(infodestino["latitude"])-float(pais["CapitalLatitude"]))/2)**2 + math.cos(c*float(pais["CapitalLatitude"]))*math.cos(c*float(infodestino["latitude"]))*math.sin(c*(float(infodestino["longitude"])-float(pais["CapitalLongitude"]))/2)**2)))
+                if edge is None:
+                    gr.addEdge(catalogo['conexiones'], pais["CapitalName"], vertice, dist)
