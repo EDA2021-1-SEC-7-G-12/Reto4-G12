@@ -55,7 +55,14 @@ while True:
         catalogo = initcatalog()
     elif int(inputs[0]) == 2:
         catalogo = initcatalog()
-        print(clusters(catalogo, lp))
+        lp1=input("Escriba el nombre del primer landing point: ")
+        lp2=input("Escriba el nombre del segundo landing point: ")
+        resultado = clusters(catalogo, lp1, lp2)
+        print("El número de clusters es " + str(resultado[0]) + ".")
+        if resultado[1]==True:
+            print("Los landing points " + str(lp1) + " y " + str(lp2) + " pertenecen al mismo cluster.")
+        elif resultado[1]==False:
+            print("Los landing points " + str(lp1) + " y " + str(lp2) + " no pertenecen al mismo cluster.")
     else:
         sys.exit(0)
 sys.exit(0)

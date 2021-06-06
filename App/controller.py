@@ -59,3 +59,6 @@ def loadCatalogo(catalogo):
         model.addcountry(catalogo,pais)
 
     return catalogo
+
+def clusters(catalogo, lp1, lp2):
+    return model.clusters(catalogo, lp1, lp2)

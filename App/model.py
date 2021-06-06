@@ -118,4 +118,9 @@ def addcountry(catalogo,pais):
 
 
 def clusters(catalogo, lp1, lp2):
-    print(scc.KosarajuSCC(catalogo))
+    lst=[]
+    componentes=scc.KosarajuSCC(catalogo["conexiones"])
+    conexionlp=scc.stronglyConnected(componentes, lp1, lp2)
+    lst.append(componentes["components"])
+    lst.append(conexionlp)
+    return lst
