@@ -65,41 +65,54 @@ while True:
     inputs = input('Seleccione una opción para continuar\n')
     if int(inputs[0]) == 1:
         print("Cargando información de los archivos ....")
-        catalogo = initcatalog()
+        catalogoo = initcatalog()
+        catalogo = catalogoo[0]
+        print("Tiempo [ms]: ", f"{catalogoo[2]:.3f}", "  ||  ",
+              "Memoria [kB]: ", f"{catalogoo[1]:.3f}")
     elif int(inputs[0]) == 2:
         lp1=input("Escriba el nombre del primer landing point: ")
         lp2=input("Escriba el nombre del segundo landing point: ")
         resultado = clusters(catalogo, lp1, lp2)
         print("El número de clusters es " + str(resultado[0]) + ".")
-        if resultado[1]==True:
+        if resultado[0][1]==True:
             print("Los landing points " + str(lp1) + " y " + str(lp2) + " pertenecen al mismo cluster.")
-        elif resultado[1]==False:
+        else:
             print("Los landing points " + str(lp1) + " y " + str(lp2) + " no pertenecen al mismo cluster.")
+        print("Tiempo [ms]: ", f"{resultado[2]:.3f}", "  ||  ",
+              "Memoria [kB]: ", f"{resultado[1]:.3f}")
     elif int(inputs[0]) == 3:
         resultado=totalarcos(catalogo)
-        print(resultado)
-    
+        print("Lista de resultados: ")
+        print(resultado[0]["elements"])
+        print("Tiempo [ms]: ", f"{resultado[2]:.3f}", "  ||  ",
+              "Memoria [kB]: ", f"{resultado[1]:.3f}")
     elif int(inputs[0]) == 4:
         paisa=input("Ingrese el país desde el que quiere buscar: ")
         paisb=input("Ingrese el país al que quiere llegar: ")
         resultado=rutaminima(catalogo, paisa, paisb)
-        if not resultado == "No hay data para uno(s) de los paises dados":
-            print("La ruta minima entre "+paisa+" y "+paisb+" es: "+str(round(float(resultado),1)) + "km")
+        if not resultado[0] == "No hay data para uno(s) de los paises dados":
+            print("La ruta minima entre "+paisa+" y "+paisb+" es: "+str(round(float(resultado[0]),1)) + "km")
         else:
-            print(resultado)
+            print(resultado[0])
+        print("Tiempo [ms]: ", f"{resultado[2]:.3f}", "  ||  ",
+              "Memoria [kB]: ", f"{resultado[1]:.3f}")
 
     elif int(inputs[0]) == 5:
         resultado=redminima(catalogo)
-        print(resultado[0])
-        print(resultado[1])
+        print("El numero total de vertices del MST es: " + str(resultado[0][0]))
+        print("El peso total del MST es: " + str(round(float(resultado[0][1]),1)))
+        print("Tiempo [ms]: ", f"{resultado[2]:.3f}", "  ||  ",
+              "Memoria [kB]: ", f"{resultado[1]:.3f}")
     elif int(inputs[0]) == 6:
         vertice = input("Diga el nombre del vertice deseado: ")
         result = adjacentes(catalogo,vertice)
-        if result["size"] == 0:
+        if result[0]["size"] == 0:
             print("No se ha afectado ningún pais/El vertice dado es invalido")
         else:
-            print("La cantidad de paises afectados es: " + str(result["size"]))
-            print("Los paises afectados son: " + str(result["elements"]))
+            print("La cantidad de paises afectados es: " + str(result[0]["size"]))
+            print("Los paises afectados son: " + str(result[0]["elements"]))
+        print("Tiempo [ms]: ", f"{result[2]:.3f}", "  ||  ",
+              "Memoria [kB]: ", f"{result[1]:.3f}")
     else:
         sys.exit(0)
 sys.exit(0)

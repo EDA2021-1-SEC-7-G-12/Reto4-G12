@@ -172,18 +172,15 @@ def rutaminima(catalogo, paisa, paisb):
 
 def redminima(catalogo):
     redmin=pr.PrimMST(catalogo["conexiones"])
-    verts=gr.numVertices(redmin)
     peso=pr.weightMST(catalogo["conexiones"], redmin)
-
+    verts = redmin["mst"]["size"]
     return verts, peso
 
 def adjacentes(catalogo,vertice):
     adjacentes = None
     listapaises = lt.newList("ARRAY_LIST")
-    escapital = False
     if m.contains(catalogo["capitales"],vertice):
         adjacentes = gr.adjacents(catalogo["conexiones"],vertice)
-        escapital = True
     elif m.contains(catalogo["invertices"],vertice):
         adjacentes = gr.adjacents(catalogo["conexiones"],m.get(catalogo["invertices"],vertice)["value"])
     if adjacentes != None:
