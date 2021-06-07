@@ -68,3 +68,6 @@ def totalarcos(catalogo):
 
 def rutaminima(catalogo, paisa, paisb):
     return model.rutaminima(catalogo, paisa, paisb)
+
+def redminima(catalogo):
+    return model.redminima(catalogo)

@@ -50,6 +50,9 @@ def totalarcos(catalogo):
 
 def rutaminima(catalogo, paisa, paisb):
     return controller.rutaminima(catalogo, paisa, paisb)
+
+def redminima(catalogo):
+    return controller.redminima(catalogo)
 """
 Menu principal
 """
@@ -80,6 +83,11 @@ while True:
             print("La ruta minima entre "+paisa+" y "+paisb+" es: "+str(round(float(resultado),1)) + "km")
         else:
             print(resultado)
+
+    elif int(inputs[0]) == 5:
+        resultado=redminima(catalogo)
+        print(resultado[0])
+        print(resultado[1])
         
     else:
         sys.exit(0)

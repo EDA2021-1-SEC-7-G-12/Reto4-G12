@@ -31,6 +31,7 @@ from DISClib.ADT import map as m
 from DISClib.ADT import list as lt
 from DISClib.Algorithms.Graphs import scc
 from DISClib.Algorithms.Graphs import dijsktra as djk
+from DISClib.Algorithms.Graphs import prim as pr
 from DISClib.Utils import error as error
 assert config
 
@@ -167,3 +168,11 @@ def rutaminima(catalogo, paisa, paisb):
         return result
     else:
         return "No hay data para uno(s) de los paises dados"
+
+
+def redminima(catalogo):
+    redmin=pr.PrimMST(catalogo["conexiones"])
+    verts=gr.numVertices(redmin)
+    peso=pr.weightMST(catalogo["conexiones"], redmin)
+
+    return verts, peso
