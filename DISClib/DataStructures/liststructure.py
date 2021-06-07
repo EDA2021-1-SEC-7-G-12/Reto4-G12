@@ -36,7 +36,7 @@ assert config
 """
 
 
-def newList(datastructure, cmpfunction, key, filename, delimeter):
+def newList(datastructure = "ARRAY_LIST", cmpfunction, key, filename, delimeter):
     """
     Args:
         datastructure:  Tipo de estructura de datos a utilizar para implementar
