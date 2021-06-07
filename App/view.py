@@ -63,6 +63,8 @@ while True:
             print("Los landing points " + str(lp1) + " y " + str(lp2) + " pertenecen al mismo cluster.")
         elif resultado[1]==False:
             print("Los landing points " + str(lp1) + " y " + str(lp2) + " no pertenecen al mismo cluster.")
+    elif int(inputs[0]) == 3:
+        pog = "pog"
     else:
         sys.exit(0)
 sys.exit(0)

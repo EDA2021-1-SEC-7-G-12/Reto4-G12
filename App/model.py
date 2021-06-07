@@ -58,7 +58,7 @@ def initcatalogo():
     catalogo["paises"] = m.newMap(numelements=14000,
                                      maptype='PROBING')
 
-    catalogo["paisesn't"] =  m.newMap(numelements=14000, maptype='PROBING')
+    catalogo["invertices"] =  m.newMap(numelements=14000, maptype='PROBING')
 
     catalogo["mapaises"] =  m.newMap(numelements=600, maptype='PROBING')
 
@@ -81,6 +81,7 @@ def haversine(catalogo,ruta):
 
 def addVer(catalogo,vertice):
     m.put(catalogo["vertices"],vertice["landing_point_id"],vertice)
+    m.put(catalogo["invertices"],vertice["name"].split(",")[0],vertice["landing_point_id"])
     if not gr.containsVertex(catalogo['conexiones'], vertice["landing_point_id"]):
         gr.insertVertex(catalogo['conexiones'], vertice["landing_point_id"])
     pais = vertice["name"].split(",") 
@@ -118,9 +119,6 @@ def addcountry(catalogo,pais):
 
 
 def clusters(catalogo, lp1, lp2):
-    lst=[]
     componentes=scc.KosarajuSCC(catalogo["conexiones"])
-    conexionlp=scc.stronglyConnected(componentes, lp1, lp2)
-    lst.append(componentes["components"])
-    lst.append(conexionlp)
-    return lst
+    conexionlp=scc.stronglyConnected(componentes, m.get(catalogo["invertices"],lp1)["value"], m.get(catalogo["invertices"],lp2)["value"])
+    return componentes["components"], conexionlp
