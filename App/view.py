@@ -53,6 +53,10 @@ def rutaminima(catalogo, paisa, paisb):
 
 def redminima(catalogo):
     return controller.redminima(catalogo)
+
+def adjacentes(catalogo,vertice):
+    return controller.adjacentes(catalogo,vertice)
+
 """
 Menu principal
 """
@@ -88,7 +92,14 @@ while True:
         resultado=redminima(catalogo)
         print(resultado[0])
         print(resultado[1])
-        
+    elif int(inputs[0]) == 6:
+        vertice = input("Diga el nombre del vertice deseado: ")
+        result = adjacentes(catalogo,vertice)
+        if result["size"] == 0:
+            print("No se ha afectado ningún pais/El vertice dado es invalido")
+        else:
+            print("La cantidad de paises afectados es: " + str(result["size"]))
+            print("Los paises afectados son: " + str(result["elements"]))
     else:
         sys.exit(0)
 sys.exit(0)

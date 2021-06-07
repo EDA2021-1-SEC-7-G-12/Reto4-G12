@@ -93,7 +93,6 @@ def addVer(catalogo,vertice):
     if not gr.containsVertex(catalogo['conexiones'], vertice["landing_point_id"]):
         gr.insertVertex(catalogo['conexiones'], vertice["landing_point_id"])
     pais = vertice["name"].split(",")
-    m.put(catalogo["capitales"],pais[0],pais)
     if len(pais)>1:
         if len(pais[1]) > 3:
             if not m.contains(catalogo["mapaises"],pais[1].strip(" ")):
@@ -114,6 +113,7 @@ def addConexion(catalogo,origen,destino,distancia):
 def addcountry(catalogo,pais):
     if not pais == None: 
         m.put(catalogo["paises"],pais["CountryName"],pais)
+        m.put(catalogo["capitales"],pais["CapitalName"],pais)
         gr.insertVertex(catalogo['conexiones'], pais["CapitalName"])
         lt.addLast(catalogo["listavertices"],pais["CapitalName"])
         if not m.get(catalogo["mapaises"],pais["CountryName"]) == None:
@@ -176,3 +176,24 @@ def redminima(catalogo):
     peso=pr.weightMST(catalogo["conexiones"], redmin)
 
     return verts, peso
+
+def adjacentes(catalogo,vertice):
+    adjacentes = None
+    listapaises = lt.newList("ARRAY_LIST")
+    escapital = False
+    if m.contains(catalogo["capitales"],vertice):
+        adjacentes = gr.adjacents(catalogo["conexiones"],vertice)
+        escapital = True
+    elif m.contains(catalogo["invertices"],vertice):
+        adjacentes = gr.adjacents(catalogo["conexiones"],m.get(catalogo["invertices"],vertice)["value"])
+    if adjacentes != None:
+        for x in range(lt.size(adjacentes)):
+            elemento = lt.getElement(adjacentes,x)
+            if m.contains(catalogo["capitales"],elemento):
+                if not lt.isPresent(listapaises,m.get(catalogo["capitales"],elemento)["value"]["CountryName"]):
+                    lt.addLast(listapaises,m.get(catalogo["capitales"],elemento)["value"]["CountryName"])
+            else:
+                data = m.get(catalogo["vertices"],elemento)["value"]["name"].split(",")
+                if not lt.isPresent(listapaises,data[-1].strip(" ")):
+                    lt.addLast(listapaises,data[-1].strip(" "))
+    return listapaises

@@ -71,3 +71,6 @@ def rutaminima(catalogo, paisa, paisb):
 
 def redminima(catalogo):
     return model.redminima(catalogo)
+
+def adjacentes(catalogo,vertice):
+    return model.adjacentes(catalogo,vertice)
