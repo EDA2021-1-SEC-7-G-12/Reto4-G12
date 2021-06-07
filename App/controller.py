@@ -172,7 +172,7 @@ def getMemory():
 
 def deltaMemory(start_memory, stop_memory):
     """
-    calcula la diferencia en memoria alocada del programa entre dos
+    Calcula la diferencia en memoria alocada del programa entre dos
     instantes de tiempo y devuelve el resultado en bytes (ej.: 2100.0 B)
     """
     memory_diff = stop_memory.compare_to(start_memory, "filename")
