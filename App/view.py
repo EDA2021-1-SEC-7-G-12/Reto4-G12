@@ -60,7 +60,6 @@ while True:
         print("Cargando información de los archivos ....")
         catalogo = initcatalog()
     elif int(inputs[0]) == 2:
-        catalogo = initcatalog()
         lp1=input("Escriba el nombre del primer landing point: ")
         lp2=input("Escriba el nombre del segundo landing point: ")
         resultado = clusters(catalogo, lp1, lp2)
@@ -70,16 +69,17 @@ while True:
         elif resultado[1]==False:
             print("Los landing points " + str(lp1) + " y " + str(lp2) + " no pertenecen al mismo cluster.")
     elif int(inputs[0]) == 3:
-        catalogo = initcatalog()
         resultado=totalarcos(catalogo)
         print(resultado)
     
     elif int(inputs[0]) == 4:
-        catalogo = initcatalog()
-        paisa="Ingrese el país desde el que quiere buscar: "
-        paisb="Ingrese el país al que quiere llegar: "
+        paisa=input("Ingrese el país desde el que quiere buscar: ")
+        paisb=input("Ingrese el país al que quiere llegar: ")
         resultado=rutaminima(catalogo, paisa, paisb)
-        print("La ruta minima entre "+paisa+" y "+paisb+" es: "+str(resultado))
+        if not resultado == "No hay data para uno(s) de los paises dados":
+            print("La ruta minima entre "+paisa+" y "+paisb+" es: "+str(round(float(resultado),1)) + "km")
+        else:
+            print(resultado)
         
     else:
         sys.exit(0)

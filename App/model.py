@@ -81,7 +81,7 @@ def haversine(catalogo,ruta):
     inforigen = m.get(catalogo["vertices"],origen)["value"]
     infodest = m.get(catalogo["vertices"],destination)["value"]
     c = math.pi/180 
-    dist = abs(2*6371000*math.asin(math.sqrt(math.sin(c*(float(infodest["latitude"])-float(inforigen["latitude"]))/2)**2 + math.cos(c*float(inforigen["latitude"]))*math.cos(c*float(infodest["latitude"]))*math.sin(c*(float(infodest["longitude"])-float(inforigen["longitude"]))/2)**2)))
+    dist = abs(2*6371*math.asin(math.sqrt(math.sin(c*(float(infodest["latitude"])-float(inforigen["latitude"]))/2)**2 + math.cos(c*float(inforigen["latitude"]))*math.cos(c*float(infodest["latitude"]))*math.sin(c*(float(infodest["longitude"])-float(inforigen["longitude"]))/2)**2)))
     return dist
 
 
@@ -122,7 +122,7 @@ def addcountry(catalogo,pais):
                 edge = gr.getEdge(catalogo['conexiones'], pais["CapitalName"], vertice)
                 infodestino = m.get(catalogo["vertices"],vertice)["value"]
                 c = math.pi/180 
-                dist = abs(2*6371000*math.asin(math.sqrt(math.sin(c*(float(infodestino["latitude"])-float(pais["CapitalLatitude"]))/2)**2 + math.cos(c*float(pais["CapitalLatitude"]))*math.cos(c*float(infodestino["latitude"]))*math.sin(c*(float(infodestino["longitude"])-float(pais["CapitalLongitude"]))/2)**2)))
+                dist = abs(2*6371*math.asin(math.sqrt(math.sin(c*(float(infodestino["latitude"])-float(pais["CapitalLatitude"]))/2)**2 + math.cos(c*float(pais["CapitalLatitude"]))*math.cos(c*float(infodestino["latitude"]))*math.sin(c*(float(infodestino["longitude"])-float(pais["CapitalLongitude"]))/2)**2)))
                 if edge is None:
                     gr.addEdge(catalogo['conexiones'], pais["CapitalName"], vertice, dist)
 
@@ -155,10 +155,15 @@ def getvertexinfo(catalogo,vertice):
 
 
 def rutaminima(catalogo, paisa, paisb):
-    recorrido=djk.Dijkstra(catalogo["conexiones"], paisa)
-    sihay=djk.hasPathTo(recorrido, paisb)
-    if sihay==True:
-        result=djk.distTo(recorrido, paisb)
+    if m.contains(catalogo["paises"],paisa) and m.contains(catalogo["paises"],paisb):
+        capa = m.get(catalogo["paises"],paisa)["value"]["CapitalName"]
+        capb = m.get(catalogo["paises"],paisb)["value"]["CapitalName"]
+        recorrido=djk.Dijkstra(catalogo["conexiones"], capa)
+        sihay=djk.hasPathTo(recorrido, capb)
+        if sihay:
+            result=djk.distTo(recorrido, capb)
+        else:
+            result="No hay camino."
+        return result
     else:
-        result="No hay camino."
-    return result
+        return "No hay data para uno(s) de los paises dados"
