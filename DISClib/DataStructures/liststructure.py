@@ -36,7 +36,7 @@ assert config
 """
 
 
-def newList(datastructure = "ARRAY_LIST", cmpfunction, key, filename, delimeter):
+def newList(datastructure, cmpfunction, key, filename, delimeter):
     """
     Args:
         datastructure:  Tipo de estructura de datos a utilizar para implementar
@@ -63,10 +63,10 @@ def newList(datastructure = "ARRAY_LIST", cmpfunction, key, filename, delimeter)
         Exception
     """
     try:
-        if (datastructure == "ARRAY_LIST"):
-            lt = alt.newList(cmpfunction, key, filename, delimeter)
-        else:
+        if (datastructure == "SINGLE_LINKED"):
             lt = slt.newList(cmpfunction, key, filename, delimeter)
+        else:
+            lt = alt.newList(cmpfunction, key, filename, delimeter)
         return lt
     except Exception as exp:
         error.reraise(exp, 'list->newList: ')
