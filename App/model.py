@@ -144,6 +144,7 @@ def totalarcos(catalogo):
             contador += grado
     return lista, contador
 
+
 def getvertexinfo(catalogo,vertice):
     if m.contains(catalogo["vertices"],vertice):
         data = m.get(catalogo["vertices"],vertice)["value"]["name"].split(",")
@@ -152,3 +153,12 @@ def getvertexinfo(catalogo,vertice):
         else:
             return {"nombre": data[0], "pais": "NO DATA", "identificador": vertice}
 
+
+def rutaminima(catalogo, paisa, paisb):
+    recorrido=djk.Dijkstra(catalogo["conexiones"], paisa)
+    sihay=djk.hasPathTo(recorrido, paisb)
+    if sihay==True:
+        result=djk.distTo(recorrido, paisb)
+    else:
+        result="No hay camino."
+    return result

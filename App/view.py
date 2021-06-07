@@ -47,6 +47,9 @@ def clusters(catalogo, lp1, lp2):
 
 def totalarcos(catalogo):
     return controller.totalarcos(catalogo)
+
+def rutaminima(catalogo, paisa, paisb):
+    return controller.rutaminima(catalogo, paisa, paisb)
 """
 Menu principal
 """
@@ -70,6 +73,14 @@ while True:
         catalogo = initcatalog()
         resultado=totalarcos(catalogo)
         print(resultado)
+    
+    elif int(inputs[0]) == 4:
+        catalogo = initcatalog()
+        paisa="Ingrese el país desde el que quiere buscar: "
+        paisb="Ingrese el país al que quiere llegar: "
+        resultado=rutaminima(catalogo, paisa, paisb)
+        print("La ruta minima entre "+paisa+" y "+paisb+" es: "+str(resultado))
+        
     else:
         sys.exit(0)
 sys.exit(0)

@@ -65,3 +65,6 @@ def clusters(catalogo, lp1, lp2):
 
 def totalarcos(catalogo):
     return model.totalarcos(catalogo)
+
+def rutaminima(catalogo, paisa, paisb):
+    return model.rutaminima(catalogo, paisa, paisb)
