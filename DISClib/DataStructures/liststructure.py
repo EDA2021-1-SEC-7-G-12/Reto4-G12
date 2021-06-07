@@ -63,10 +63,10 @@ def newList(datastructure, cmpfunction, key, filename, delimeter):
         Exception
     """
     try:
-        if (datastructure == "SINGLE_LINKED"):
-            lt = slt.newList(cmpfunction, key, filename, delimeter)
-        else:
+        if (datastructure == "ARRAY_LIST"):
             lt = alt.newList(cmpfunction, key, filename, delimeter)
+        else:
+            lt = slt.newList(cmpfunction, key, filename, delimeter)
         return lt
     except Exception as exp:
         error.reraise(exp, 'list->newList: ')

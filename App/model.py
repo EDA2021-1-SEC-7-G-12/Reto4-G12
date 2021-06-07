@@ -44,8 +44,10 @@ def initcatalogo():
                     'vertices': None,
                     'conexiones': None,
                     "paises": None,
-                    "paisesn't": None,
-                    "mapaises": None
+                    "listavertices": None,
+                    "mapaises": None,
+                    "invertices": None,
+                    "capitales": None
                     }
 
     catalogo["vertices"] = m.newMap(numelements=14000,
@@ -60,7 +62,11 @@ def initcatalogo():
 
     catalogo["invertices"] =  m.newMap(numelements=14000, maptype='PROBING')
 
-    catalogo["mapaises"] =  m.newMap(numelements=600, maptype='PROBING')
+    catalogo["mapaises"] =  m.newMap(numelements=500, maptype='PROBING')
+
+    catalogo["listavertices"] = lt.newList("ARRAY_LIST")
+
+    catalogo["capitales"] =  m.newMap(numelements=500, maptype='PROBING')
 
     return catalogo
 
@@ -82,9 +88,11 @@ def haversine(catalogo,ruta):
 def addVer(catalogo,vertice):
     m.put(catalogo["vertices"],vertice["landing_point_id"],vertice)
     m.put(catalogo["invertices"],vertice["name"].split(",")[0],vertice["landing_point_id"])
+    lt.addLast(catalogo["listavertices"],vertice["landing_point_id"])
     if not gr.containsVertex(catalogo['conexiones'], vertice["landing_point_id"]):
         gr.insertVertex(catalogo['conexiones'], vertice["landing_point_id"])
-    pais = vertice["name"].split(",") 
+    pais = vertice["name"].split(",")
+    m.put(catalogo["capitales"],pais[0],pais)
     if len(pais)>1:
         if len(pais[1]) > 3:
             if not m.contains(catalogo["mapaises"],pais[1].strip(" ")):
@@ -106,6 +114,7 @@ def addcountry(catalogo,pais):
     if not pais == None: 
         m.put(catalogo["paises"],pais["CountryName"],pais)
         gr.insertVertex(catalogo['conexiones'], pais["CapitalName"])
+        lt.addLast(catalogo["listavertices"],pais["CapitalName"])
         if not m.get(catalogo["mapaises"],pais["CountryName"]) == None:
             listapoints = m.get(catalogo["mapaises"],pais["CountryName"])["value"]
             for x in range(int(listapoints["size"])):
@@ -126,9 +135,20 @@ def clusters(catalogo, lp1, lp2):
 
 def totalarcos(catalogo):
     lista=lt.newList("ARRAY_LIST")
-    for x in catalogo["vertices"]:
-        grado=gr.degree(catalogo, x)
-        if grado>1:
-            lt.addLast(lista, x)
+    contador = 0
+    for x in range(catalogo["listavertices"]["size"]):
+        vertice = lt.getElement(catalogo["listavertices"],x)
+        grado=gr.degree(catalogo["conexiones"], vertice)
+        if grado>1 and getvertexinfo(catalogo,vertice) != None:
+            lt.addLast(lista, getvertexinfo(catalogo,vertice))
+            contador += grado
+    return lista, contador
 
-    return lt.size(lista)
+def getvertexinfo(catalogo,vertice):
+    if m.contains(catalogo["vertices"],vertice):
+        data = m.get(catalogo["vertices"],vertice)["value"]["name"].split(",")
+        if len(data) > 1:
+            return {"nombre": data[0], "pais": data[-1].strip(" "), "identificador": vertice}
+        else:
+            return {"nombre": data[0], "pais": "NO DATA", "identificador": vertice}
+
