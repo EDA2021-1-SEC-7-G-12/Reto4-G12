@@ -122,3 +122,13 @@ def clusters(catalogo, lp1, lp2):
     componentes=scc.KosarajuSCC(catalogo["conexiones"])
     conexionlp=scc.stronglyConnected(componentes, m.get(catalogo["invertices"],lp1)["value"], m.get(catalogo["invertices"],lp2)["value"])
     return componentes["components"], conexionlp
+
+
+def totalarcos(catalogo):
+    lista=lt.newList("ARRAY_LIST")
+    for x in catalogo["vertices"]:
+        grado=gr.degree(catalogo, x)
+        if grado>1:
+            lt.addLast(lista, x)
+
+    return lt.size(lista)

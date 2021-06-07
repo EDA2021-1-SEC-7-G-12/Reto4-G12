@@ -62,3 +62,6 @@ def loadCatalogo(catalogo):
 
 def clusters(catalogo, lp1, lp2):
     return model.clusters(catalogo, lp1, lp2)
+
+def totalarcos(catalogo):
+    return model.totalarcos(catalogo)

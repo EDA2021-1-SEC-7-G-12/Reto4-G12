@@ -44,6 +44,9 @@ def initcatalog():
 
 def clusters(catalogo, lp1, lp2):
     return controller.clusters(catalogo, lp1, lp2)
+
+def totalarcos(catalogo):
+    return controller.totalarcos(catalogo)
 """
 Menu principal
 """
@@ -64,7 +67,9 @@ while True:
         elif resultado[1]==False:
             print("Los landing points " + str(lp1) + " y " + str(lp2) + " no pertenecen al mismo cluster.")
     elif int(inputs[0]) == 3:
-        pog = "pog"
+        catalogo = initcatalog()
+        resultado=totalarcos(catalogo)
+        print(resultado)
     else:
         sys.exit(0)
 sys.exit(0)
